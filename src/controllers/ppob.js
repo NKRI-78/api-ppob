@@ -3,9 +3,11 @@ const Ppob = require("../models/Ppob");
 
 module.exports = {
 
-    priceListPulsaData: async (_, res) => {
+    priceListPulsaData: async (req, res) => {
+        const { prefix } = req.query
+
         try {
-            var priceList = await Ppob.priceListPulsaData()
+            var priceList = await Ppob.priceListPulsaData(prefix)
 
             var data = []
 
@@ -27,7 +29,7 @@ module.exports = {
         }
     },
 
-    priceListPlnPrabayar: async (_, res) => {
+    priceListPlnPrabayar: async (req, res) => {
         try {
             var priceList = await Ppob.priceListPlnPrabayar()
 
