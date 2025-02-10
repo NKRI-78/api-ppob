@@ -23,7 +23,7 @@ module.exports = {
                 data.push({
                     id: priceItem.uid, 
                     code: priceItem.product_code,
-                    price: priceItem.product_price,
+                    price: parseInt(priceItem.product_price),
                     name: priceItem.product_name
                 })
             }
@@ -35,7 +35,7 @@ module.exports = {
         }
     },
 
-    priceListPlnPrabayar: async (req, res) => {
+    priceListPlnPrabayar: async (_, res) => {
         try {
             var priceList = await Ppob.priceListPlnPrabayar()
 
@@ -47,7 +47,7 @@ module.exports = {
                 data.push({
                     id: priceItem.uid, 
                     code: priceItem.product_code,
-                    price: priceItem.product_price,
+                    price: parseInt(priceItem.product_price),
                     name: priceItem.product_name
                 })
             }
