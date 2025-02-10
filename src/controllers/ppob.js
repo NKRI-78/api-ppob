@@ -6,8 +6,14 @@ module.exports = {
     priceListPulsaData: async (req, res) => {
         const { prefix } = req.query
 
+        if (!prefix || !prefix.startsWith("0")) {
+            throw new Error("Invalid prefix format")
+        }
+
+        const convertedPrefix = prefix.replace("0", "62")
+
         try {
-            var priceList = await Ppob.priceListPulsaData(prefix)
+            var priceList = await Ppob.priceListPulsaData(convertedPrefix)
 
             var data = []
 
