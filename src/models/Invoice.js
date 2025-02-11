@@ -6,7 +6,7 @@ module.exports = {
         return new Promise ((resolve, reject) => {
             var query = `SELECT * FROM invoices WHERE date_value = ? ORDER BY no DESC LIMIT 1`
             const values = [invoiceDate]
-            conn.query(query, (e, result) => {
+            conn.query(query, values, (e, result) => {
                 if(e) {
                     reject(new Error(e))
                 } else {
