@@ -22,7 +22,7 @@ module.exports = {
     },
 
     inquiry: async (req, res) => {
-        const { app, user_id, product_id, payment_code, payment_channel, type } = req.body
+        const { app, idpel, user_id, product_id, payment_code, payment_channel, type } = req.body
 
         var transactionId = uuidv4()
 
@@ -30,6 +30,9 @@ module.exports = {
 
             if(typeof app == "undefined" || app == "")
                 throw new Error("Field app is required")
+
+            if(typeof idpel == "undefined" || idpel == "")
+                throw new Error("Field idpel is required")
 
             if (typeof user_id == "undefined" || user_id == "")
                 throw new Error("Field user_id is required")
@@ -69,7 +72,7 @@ module.exports = {
 
             await Transaction.insert(app, transactionId, user_id)
 
-            await Invoice.insert(invoiceDate, counterNumber, invoiceValue, transactionId)
+            await Invoice.insert(invoiceDate, counterNumber, invoiceValue, transactionId, idpel, product_id)
 
             var data = {
                 channel_id: payment_channel,
