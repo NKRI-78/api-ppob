@@ -4,40 +4,36 @@ module.exports = {
 
     priceListPulsaData: (prefix) => {
         return new Promise((resolve, reject) => {
-            var whereClause = ""
-
-            console.log(prefix)
-
-            if(prefix == "62895" || prefix == "62896" || prefix == "62897" || prefix == "62898" || prefix == "62899") {
-                whereClause += `WHERE prefix = 'THREE'`
+            const prefixMap = {
+                "THREE": ["62895", "62896", "62897", "62898", "62899"],
+                "TELKOMSEL": ["62811", "62812", "62813", "62821", "62822", "62851", "62852", "62853"],
+                "AXIS/XL": ["62817", "62818", "62819", "62859", "62877", "62878"],
+                "INDOSAT": ["62855", "62856", "62857", "62858"]
+            };
+    
+            let operator = Object.keys(prefixMap).find(key => prefixMap[key].includes(prefix));
+    
+            if (!operator) {
+                return resolve([]);
             }
-
-            if(prefix == "62811" || prefix == "62812" || prefix == "62813" || prefix == "62821" 
-                ||  prefix == "62822" || prefix == "62821" || prefix == "62822" || prefix == "62851" 
-                || prefix == "62852" || prefix == "62853") {
-                whereClause += `WHERE prefix = 'TELKOMSEL'`
+    
+            let whereClause = `WHERE prefix = '${operator}'`;
+            if (operator === "AXIS/XL") {
+                whereClause = `WHERE prefix IN ('AXIS/XL', 'XLREG')`;
             }
-
-            if(prefix == "62817" || prefix == "62818" || prefix == "62819" || prefix == "62859" || prefix == "62877" || prefix == "62878") {
-                whereClause += `WHERE prefix = 'AXIS/XL' OR prefix = 'XLREG'` 
-            }
-
-            if(prefix == "62855" || prefix == "62856" || prefix == "62857" || prefix == "62858") {
-                whereClause += `WHERE prefix = 'INDOSAT'`
-            }
-
-            var query = `SELECT uid, product_code, product_price, product_name 
-            FROM pricelists ${whereClause}`
-
+    
+            const query = `SELECT uid, product_code, product_price, product_name FROM pricelists ${whereClause}`;
+    
             conn.query(query, (e, result) => {
                 if (e) {
-                    reject(new Error(e))
+                    reject(new Error(e));
                 } else {
-                    resolve(result)
+                    resolve(result);
                 }
-            })
-        })
+            });
+        });
     },
+    
 
     priceListPlnPrabayar: () => {
         return new Promise((resolve, reject) => {
