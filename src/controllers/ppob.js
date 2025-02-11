@@ -75,7 +75,7 @@ module.exports = {
                 "ref1":""
             }
 
-            var url = process.env.RAJABILLER_PROD;
+            var url = process.env.RAJABILLER_PROD
         
             var config = {
                 method: 'POST',
@@ -84,25 +84,25 @@ module.exports = {
                     'Content-Type': 'application/json'
                 },
                 data: dataAxios
-            };
+            }
 
-            const response = await axios(config);
-
-            console.log(response)
+            const response = await axios(config)
 
             if(response.status == 200) {
                 if(typeof response.data != "undefined" && response.data.error)
                     throw new Error(response.data.error);
 
+                if(response.data.rc !== "00") {
+                    misc.response(res, 400, false, response.data.status)
+                }
             } else {
                 if(typeof response.data != "undefined") {
-                    throw new Error(response.data.error);
+                    throw new Error(response.data.error)
                 } else {
-                    throw new Error('Oops! Please try again later');
+                    throw new Error('Oops! Please try again later')
                 }
             } 
 
-            misc.response(res, 200, false, "")
         } catch(e) {
             console.log(e)
             misc.response(res, 400, true, e.message)
