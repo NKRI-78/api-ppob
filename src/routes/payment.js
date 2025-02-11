@@ -4,5 +4,6 @@ const payment = require("../controllers/payment")
 
 Route
     .get("/", payment.channel)
+    .post("/inquiry", payment.inquiry)
 
 module.exports = Route
