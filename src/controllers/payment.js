@@ -102,7 +102,7 @@ module.exports = {
             }
 
             var data = {
-                channel_id: payment_channel,
+                channel_id: payment_code,
                 orderId: invoiceValue,
                 amount: amount, 
                 app: "marlinda",
@@ -120,7 +120,7 @@ module.exports = {
             var paymentAccess
             var paymentType
 
-            if(payment_code == "gopay" || payment_code == "shopee" || payment_code == "ovo" || payment_code == "dana") {
+            if(payment_channel.toLowerCase() == "gopay" || payment_code.toLowerCase() == "shopee" || payment_code.toLowerCase() == "ovo" || payment_code.toLowerCase() == "dana") {
                 paymentAccess = result.data.data.data.actions[0].url
                 paymentType = "emoney"
             } else {
