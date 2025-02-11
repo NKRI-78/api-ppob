@@ -11,13 +11,15 @@ module.exports = {
                 "INDOSAT": ["62855", "62856", "62857", "62858"]
             };
     
-            let operator = Object.keys(prefixMap).find(key => prefixMap[key].includes(prefix));
+            let operator = Object.keys(prefixMap).find(key => 
+                prefixMap[key].some(p => prefix.startsWith(p))
+            );
     
             if (!operator) {
-                return resolve([]);
+                return resolve([]); // Return empty array if no match
             }
     
-            let whereClause = `WHERE prefix = '${operator}'`;
+            let whereClause = `WHERE prefix LIKE '${operator}%'`;
             if (operator === "AXIS/XL") {
                 whereClause = `WHERE prefix IN ('AXIS/XL', 'XLREG')`;
             }
