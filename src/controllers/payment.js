@@ -62,7 +62,7 @@ module.exports = {
             : products[0].product_price 
 
             var callbackUrl = type == "PULSA" 
-            ? procces.env.CALLBACK_PAY_PULSA 
+            ? process.env.CALLBACK_PAY_PULSA 
             : process.env.CALLBACK_PAY_PLN
 
             const invoiceDate = moment().format('YYYYMMDD')
