@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 const misc = require("../helpers/response");
 const Ppob = require("../models/Ppob");
 
@@ -58,5 +60,53 @@ module.exports = {
             misc.response(res, 400, true, e.message)
         }
     },
+
+    payPulsa: async (req, res) => {
+        const { idpel, product } = req.body 
+
+        try {
+
+            var dataAxios = {
+                "method":"bayar",
+                "uid": process.env.RAJABILLER_UID,
+                "pin": process.env.RAJABILLER_PIN,
+                "produk": product,
+                "idpel": idpel,
+                "ref1":""
+            }
+
+            var url = process.env.RAJABILLER_PROD;
+        
+            var config = {
+                method: 'POST',
+                url: url,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: dataAxios
+            };
+
+            const response = await axios(config);
+
+            console.log(response)
+
+            if(response.status == 200) {
+                if(typeof response.data != "undefined" && response.data.error)
+                    throw new Error(response.data.error);
+
+            } else {
+                if(typeof response.data != "undefined") {
+                    throw new Error(response.data.error);
+                } else {
+                    throw new Error('Oops! Please try again later');
+                }
+            } 
+
+            misc.response(res, 200, false, "")
+        } catch(e) {
+            console.log(e)
+            misc.response(res, 400, true, e.message)
+        }
+    }
 
 }
