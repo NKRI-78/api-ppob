@@ -104,7 +104,7 @@ module.exports = {
             var data = {
                 channel_id: payment_channel,
                 orderId: invoiceValue,
-                amount: amount, 
+                amount: parseInt(amount), 
                 app: "marlinda",
                 callbackUrl: callbackUrl
             }
