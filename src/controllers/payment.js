@@ -82,7 +82,7 @@ module.exports = {
                 var fcm = fcms[i]
                 var token = fcm.token
                 
-                await utils.sendFCM(`Terima Kasih ! Silahkan melakukan pembayaran lebih sebear`, amount, token, "ppob")
+                await utils.sendFCM(`Terima Kasih ! Silahkan melakukan pembayaran sebesar`, amount, token, "ppob")
             }
 
             var data = {
