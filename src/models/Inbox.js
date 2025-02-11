@@ -16,11 +16,11 @@ module.exports = {
         })
     },
 
-    storeInbox: (title, description, field1, field2, origin, link) => {
+    storeInbox: (title, description, field1, field2, origin, link, field3) => {
         return new Promise((resolve, reject) => {
-            var query = `INSERT inboxes (title, description, field1, field2, origin, link) VALUES (?, ?, ?, ?, ?, ?)`
+            var query = `INSERT inboxes (title, description, field1, field2, origin, link, field3) VALUES (?, ?, ?, ?, ?, ?, ?)`
 
-            var values = [title, description, field1, field2, origin, link]
+            var values = [title, description, field1, field2, origin, link, field3]
 
             conn.query(query, values, (e, result) => {
                 if (e) {

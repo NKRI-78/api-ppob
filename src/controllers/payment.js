@@ -3,6 +3,8 @@ const Payment = require("../models/Payment")
 
 const moment = require("moment")
 
+const axios = require("axios")
+
 const { v4: uuidv4 } = require('uuid')
 const Transaction = require("../models/Transaction")
 const Invoice = require("../models/Invoice")
@@ -126,7 +128,7 @@ module.exports = {
                 paymentType = "va"
             }
 
-            await Inbox.storeInbox(titleInbox, descInbox, transactionId, "UNPAID", "marlinda", paymentAccess)
+            await Inbox.storeInbox(titleInbox, descInbox, transactionId, "UNPAID", "marlinda", paymentAccess, paymentType)
             
             misc.response(res, 200, false, "")
         } catch (e) {
