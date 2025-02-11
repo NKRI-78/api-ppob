@@ -4,7 +4,8 @@ module.exports = {
 
     invoice: (invoiceDate) => {
         return new Promise ((resolve, reject) => {
-            var query = `SELECT * FROM invoices WHERE date_value = '${invoiceDate}' ORDER BY no DESC LIMIT 1`
+            var query = `SELECT * FROM invoices WHERE date_value = ? ORDER BY no DESC LIMIT 1`
+            const values = [invoiceDate]
             conn.query(query, (e, result) => {
                 if(e) {
                     reject(new Error(e))
@@ -17,8 +18,9 @@ module.exports = {
 
     findByValue: (value) => {
         return new Promise ((resolve, reject) => {
-            var query = `SELECT * FROM invoices WHERE value = '${value}' ORDER BY no DESC LIMIT 1`
-            conn.query(query, (e, result) => {
+            var query = `SELECT * FROM invoices WHERE value = ? ORDER BY no DESC LIMIT 1`
+            const values = [value]
+            conn.query(query, values, (e, result) => {
                 if(e) {
                     reject(new Error(e))
                 } else {
@@ -31,8 +33,9 @@ module.exports = {
     insert: (invoiceDate, counterNumber, invoiceValue, transactionId) => {
         return new Promise ((resolve, reject) => {
             var query = `INSERT INTO invoices (no, value, date_value, transaction_id) 
-            VALUES ('${counterNumber}', '${invoiceValue}', '${invoiceDate}', '${transactionId}')`
-            conn.query(query, (e, result) => {
+            VALUES (?, ?, ?, ?)`
+            const values = [counterNumber, invoiceValue, invoiceDate, transactionId]
+            conn.query(query, values, (e, result) => {
                 if(e) {
                     reject(new Error(e))
                 } else {
@@ -42,11 +45,11 @@ module.exports = {
         })
     },
 
-
     delete: (transactionId) => {
         return new Promise ((resolve, reject) => {
-            var query = `DELETE FROM invoices WHERE transaction_id = '${transactionId}'`
-            conn.query(query, (e, result) => {
+            var query = `DELETE FROM invoices WHERE transaction_id = ?`
+            const values = [transactionId]
+            conn.query(query, values, (e, result) => {
                 if(e) {
                     reject(new Error(e))
                 } else {

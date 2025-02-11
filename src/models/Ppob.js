@@ -52,6 +52,27 @@ module.exports = {
                 }
             })
         })
+    },
+
+    getPriceByProductId: (id) => {
+        return new Promise((resolve, reject) => {
+            var query = `SELECT uid, product_code, product_price, product_name 
+                FROM pricelists 
+                WHERE uid = ?
+                UNION 
+                SELECT uid, product_code, product_price, product_name 
+                FROM pricelist_prabayar_plns 
+                WHERE uid = ?
+            `
+            const values = [id, id]
+            conn.query(query, values, (e, result) => {
+                if (e) {
+                    reject(new Error(e))
+                } else {
+                    resolve(result)
+                }
+            })
+        })
     }
 
 }
