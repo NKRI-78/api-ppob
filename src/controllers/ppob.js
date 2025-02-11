@@ -66,7 +66,7 @@ module.exports = {
 
         try {
 
-            var dataAxios = {
+            var data = {
                 "method":"bayar",
                 "uid": process.env.RAJABILLER_UID,
                 "pin": process.env.RAJABILLER_PIN,
@@ -83,19 +83,19 @@ module.exports = {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                data: dataAxios
+                data: data
             }
 
             const response = await axios(config)
-
-            console.log(response.data)
 
             if(response.status == 200) {
                 if(typeof response.data != "undefined" && response.data.error)
                     throw new Error(response.data.error);
 
                 if(response.data.rc !== "00") {
-                    misc.response(res, 400, false, response.data.status)
+                    misc.response(res, 400, true, response.data.status)
+                } else {
+                    misc.response(res, 200, false, response.data.status)
                 }
             } else {
                 if(typeof response.data != "undefined") {
