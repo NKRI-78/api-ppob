@@ -7,6 +7,8 @@ const { v4: uuidv4 } = require('uuid')
 const Transaction = require("../models/Transaction")
 const Invoice = require("../models/Invoice")
 const Ppob = require("../models/Ppob")
+const utils = require("../helpers/utils")
+const Fcm = require("../models/Fcm")
 
 module.exports = {
 
@@ -73,6 +75,15 @@ module.exports = {
             await Transaction.insert(app, transactionId, user_id)
 
             await Invoice.insert(invoiceDate, counterNumber, invoiceValue, transactionId, idpel, product_id)
+
+            var fcms = await Fcm.getFcm(user_id, app)
+
+            for (const i in fcms) {
+                var fcm = fcms[i]
+                var token = fcm.token
+                
+                await utils.sendFCM(`Terima Kasih ! Silahkan melakukan pembayaran lebih sebear`, amount, token, "ppob")
+            }
 
             var data = {
                 channel_id: payment_channel,
