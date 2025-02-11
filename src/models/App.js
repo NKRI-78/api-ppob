@@ -6,7 +6,7 @@ module.exports = {
         return new Promise((resolve, reject) => {
             var query = `SELECT * FROM apps WHERE id = ?`
             var values = [appId]
-            connMarlinda.query(query, values, (e, result) => {
+            conn.query(query, values, (e, result) => {
                 if (e) {
                     reject(new Error(e))
                 } else {
