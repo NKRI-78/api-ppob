@@ -4,7 +4,7 @@ module.exports = {
 
     insert: (app, id, userId) => {
         return new Promise ((resolve, reject) => {
-            var query = `INSERT INTO transactions (app, uid, user_id) VALUES (?, ?, ?)`
+            var query = `INSERT INTO transactions (app_id, uid, user_id) VALUES (?, ?, ?)`
             const values = [app, id, userId]
             conn.query(query, values, (e, result) => {
                 if(e) {

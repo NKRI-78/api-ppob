@@ -10,6 +10,7 @@ const Ppob = require("../models/Ppob")
 const utils = require("../helpers/utils")
 const Fcm = require("../models/Fcm")
 const Inbox = require("../models/Inbox")
+const App = require("../models/App")
 
 module.exports = {
 
@@ -76,7 +77,13 @@ module.exports = {
 
             var invoiceValue = `PPOB_${type}-` + invoiceDate + '-' + (Math.floor(Math.random() * (99999 - 10000 + 1)) + 10000)
 
-            await Transaction.insert(app, transactionId, user_id)
+            var apps = await App.getAppById(app)
+
+            var appId = apps.length == 0 
+            ? -1 
+            : apps[0].id
+
+            await Transaction.insert(appId, transactionId, user_id)
 
             await Invoice.insert(invoiceDate, counterNumber, invoiceValue, transactionId, idpel, product_id)
 
