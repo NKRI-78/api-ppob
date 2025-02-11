@@ -88,6 +88,8 @@ module.exports = {
 
             const response = await axios(config)
 
+            console.log(response.data)
+
             if(response.status == 200) {
                 if(typeof response.data != "undefined" && response.data.error)
                     throw new Error(response.data.error);
