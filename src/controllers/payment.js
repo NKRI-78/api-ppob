@@ -9,6 +9,7 @@ const Invoice = require("../models/Invoice")
 const Ppob = require("../models/Ppob")
 const utils = require("../helpers/utils")
 const Fcm = require("../models/Fcm")
+const Inbox = require("../models/Inbox")
 
 module.exports = {
 
@@ -53,6 +54,9 @@ module.exports = {
 
             var products = await Ppob.getPriceByProductId(product_id)
 
+            var productName = products.length == 0 
+            ? 0
+            : products[0].product_name 
             var amount = products.length == 0 
             ? 0
             : products[0].product_price 
@@ -78,11 +82,14 @@ module.exports = {
 
             var fcms = await Fcm.getFcm(user_id, app)
 
+            var titleInbox = `Terima kasih ! telah melakukan transaksi ${productName}, segera lakukan pembayaran sebesar`
+            var descInbox = amount
+
             for (const i in fcms) {
                 var fcm = fcms[i]
                 var token = fcm.token
                 
-                await utils.sendFCM(`Terima Kasih ! Silahkan melakukan pembayaran sebesar`, amount, token, "ppob")
+                await utils.sendFCM(titleInbox, descInbox, token, "ppob")
             }
 
             var data = {
@@ -111,6 +118,8 @@ module.exports = {
                 paymentAccess = result.data.data.data.vaNumber
                 paymentType = "va"
             }
+
+            await Inbox.storeInbox(titleInbox, descInbox, transactionId, "UNPAID", "marlinda", paymentAccess)
             
             misc.response(res, 200, false, "")
         } catch (e) {
