@@ -16,7 +16,7 @@ module.exports = {
             );
     
             if (!operator) {
-                return resolve([]); // Return empty array if no match
+                return resolve([]);
             }
     
             let whereClause = `WHERE prefix LIKE '${operator}%'`;

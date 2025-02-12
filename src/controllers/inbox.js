@@ -1,7 +1,4 @@
-const axios = require('axios')
-
 const misc = require("../helpers/response")
-const Invoice = require('../models/Invoice')
 const Inbox = require('../models/Inbox')
 
 module.exports = {
@@ -27,7 +24,10 @@ module.exports = {
                     description: inbox.description ?? "-",
                     field2: inbox.field2 ?? "-",
                     field3: inbox.field3 ?? "-",
-                    link: inbox.link ?? "-"
+                    link: inbox.link ?? "-",
+                    is_read: inbox.is_read == 0 
+                    ? false 
+                    : true
                 })
             }
 
