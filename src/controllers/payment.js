@@ -100,7 +100,7 @@ module.exports = {
                 var fcm = fcms[i]
                 var token = fcm.token
                 
-                await utils.sendFCM(titleInbox, descInbox, token, "ppob")
+                await utils.sendFCM(titleInbox, utils.formatCurrency(descInbox), token, "ppob")
             }
 
             var data = {
@@ -130,7 +130,7 @@ module.exports = {
                 paymentType = "va"
             }
 
-            await Inbox.storeInbox(titleInbox, descInbox, transactionId, "UNPAID", "marlinda", paymentAccess, payment_code, paymentType, user_id)
+            await Inbox.storeInbox(titleInbox, utils.formatCurrency(descInbox), transactionId, "UNPAID", "marlinda", paymentAccess, payment_code, paymentType, user_id)
             
             misc.response(res, 200, false, "")
         } catch (e) {
