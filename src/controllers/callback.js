@@ -3,6 +3,9 @@ const axios = require('axios')
 const misc = require("../helpers/response")
 const Invoice = require('../models/Invoice')
 const Inbox = require('../models/Inbox')
+const Transaction = require('../models/Transaction')
+const Fcm = require('../models/Fcm')
+const utils = require('../helpers/utils')
 
 module.exports = {
 
@@ -19,6 +22,12 @@ module.exports = {
             var transactionId = invoices[0].transaction_id
             var product = invoices[0].product
             var idpel = invoices[0].idpel
+
+            var transactions = await Transaction.findByTransactionId(transactionId)
+
+            var userId = transactions.length == 0 
+            ? "-" 
+            : transactions[0].user_id
 
             var data = {
                 "method":"bayar",
@@ -50,6 +59,15 @@ module.exports = {
                     if(response.data.rc !== "00") {
                         misc.response(res, 400, true, response.data.status)
                     } else {
+                        var fcms = await Fcm.getFcm(userId, "marlinda")
+
+                        for (const i in fcms) {
+                            var fcm = fcms[i]
+                            var token = fcm.token
+
+                            await utils.sendFCM("Pembayaran berhasil !", "Terima kasih sudah menggunakan layanan kami", token, "ppob")
+                        }
+
                         await Inbox.updateInboxByTransactionId(transactionId)
 
                         misc.response(res, 200, false, response.data.status)
