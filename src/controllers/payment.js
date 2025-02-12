@@ -126,7 +126,7 @@ module.exports = {
             if(payment_code == "gopay" || payment_code == "shopee" || payment_code == "ovo" || payment_code == "dana") {
                 paymentAccess = result.data.data.data.actions[0].url
                 paymentType = "emoney"
-                const now = moment()
+                const now = moment(new Date())
                 const newTime = now.add(30, 'minutes')
 
                 paymentExpire = newTime.format('YYYY-MM-DD HH:mm:ss')
