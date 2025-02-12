@@ -25,6 +25,7 @@ module.exports = {
                     field2: inbox.field2 ?? "-",
                     field3: inbox.field3 ?? "-",
                     field4: inbox.field4 ?? "-",
+                    field5: inbox.field5 ?? "-",
                     link: inbox.link ?? "-",
                     is_read: inbox.is_read == 0 
                     ? false 
@@ -64,6 +65,7 @@ module.exports = {
                     field2: inbox.field2 ?? "-",
                     field3: inbox.field3 ?? "-",
                     field4: inbox.field4 ?? "-",
+                    field5: inbox.field5 ?? "-",
                     link: inbox.link ?? "-",
                     is_read: inbox.is_read == 0 
                     ? false 
