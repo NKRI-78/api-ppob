@@ -128,7 +128,7 @@ module.exports = {
                 paymentType = "va"
             }
 
-            await Inbox.storeInbox(titleInbox, descInbox, transactionId, "UNPAID", "marlinda", paymentAccess, paymentType)
+            await Inbox.storeInbox(titleInbox, descInbox, transactionId, "UNPAID", "marlinda", paymentAccess, paymentType, user_id)
             
             misc.response(res, 200, false, "")
         } catch (e) {

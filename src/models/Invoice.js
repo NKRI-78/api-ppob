@@ -30,11 +30,11 @@ module.exports = {
         })
     },
 
-    insert: (invoiceDate, counterNumber, invoiceValue, transactionId, productId, idpel) => {
+    insert: (invoiceDate, counterNumber, invoiceValue, transactionId, idpel, product) => {
         return new Promise ((resolve, reject) => {
             var query = `INSERT INTO invoices (no, value, date_value, transaction_id, product, idpel) 
             VALUES (?, ?, ?, ?, ?, ?)`
-            const values = [counterNumber, invoiceValue, invoiceDate, transactionId, productId, idpel]
+            const values = [counterNumber, invoiceValue, invoiceDate, transactionId, product, idpel]
             conn.query(query, values, (e, result) => {
                 if(e) {
                     reject(new Error(e))
