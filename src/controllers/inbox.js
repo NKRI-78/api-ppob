@@ -19,7 +19,7 @@ module.exports = {
                 var inbox = inboxes[i]
 
                 data.push({
-                    id: inbox.uid, 
+                    id: inbox.id, 
                     title: inbox.title ?? "-",
                     description: inbox.description ?? "-",
                     field2: inbox.field2 ?? "-",
@@ -57,7 +57,7 @@ module.exports = {
                 var inbox = inboxes[i]
 
                 data.push({
-                    id: inbox.uid, 
+                    id: inbox.id, 
                     title: inbox.title ?? "-",
                     description: inbox.description ?? "-",
                     field2: inbox.field2 ?? "-",
