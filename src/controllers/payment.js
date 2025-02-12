@@ -1,6 +1,6 @@
 const misc = require("../helpers/response")
 
-const moment = require("moment")
+const moment = require("moment-timezone")
 
 const axios = require("axios")
 
