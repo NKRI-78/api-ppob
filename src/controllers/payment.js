@@ -100,7 +100,7 @@ module.exports = {
                 var fcm = fcms[i]
                 var token = fcm.token
                 
-                await utils.sendFCM(titleInbox, utils.formatCurrency(descInbox), token, "ppob")
+                await utils.sendFCM(titleInbox, `Silahkan periksa halaman notifikasi untuk info pembayaran`, token, "ppob")
             }
 
             var data = {
@@ -121,13 +121,19 @@ module.exports = {
 
             var paymentAccess
             var paymentType
+            var paymentExpire
 
             if(payment_code == "gopay" || payment_code == "shopee" || payment_code == "ovo" || payment_code == "dana") {
                 paymentAccess = result.data.data.data.actions[0].url
                 paymentType = "emoney"
+                const now = moment()
+                const newTime = now.add(30, 'minutes')
+
+                paymentExpire = newTime.format('YYYY-MM-DD HH:mm:ss')
             } else {
                 paymentAccess = result.data.data.data.vaNumber
                 paymentType = "va"
+                paymentExpire = result.data.data.expire 
             }
 
             await Inbox.storeInbox(titleInbox, utils.formatCurrency(descInbox), transactionId, "UNPAID", "marlinda", paymentAccess, payment_code, paymentType, user_id)
