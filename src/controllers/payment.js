@@ -93,7 +93,7 @@ module.exports = {
 
             var fcms = await Fcm.getFcm(user_id, app)
 
-            var titleInbox = `Terima kasih ! telah melakukan transaksi ${productName}, segera lakukan pembayaran sebesar`
+            var titleInbox = `Terima kasih ! telah melakukan transaksi ${productName}`
             var descInbox = amount
 
             for (const i in fcms) {
