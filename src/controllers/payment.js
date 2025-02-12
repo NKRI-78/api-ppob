@@ -136,7 +136,7 @@ module.exports = {
                 paymentExpire = result.data.data.expire 
             }
 
-            await Inbox.storeInbox(titleInbox, utils.formatCurrency(descInbox), transactionId, "UNPAID", "marlinda", paymentAccess, payment_code, paymentType, user_id)
+            await Inbox.storeInbox(titleInbox, utils.formatCurrency(descInbox), transactionId, "UNPAID", "marlinda", paymentAccess, paymentExpire, payment_code, paymentType, user_id)
             
             misc.response(res, 200, false, "")
         } catch (e) {
