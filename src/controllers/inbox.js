@@ -69,7 +69,7 @@ module.exports = {
                 })
             }
 
-            misc.response(res, 200, false, "", data)
+            misc.response(res, 200, false, "", data[0])
 
         } catch(e) {
             console.log(e)
