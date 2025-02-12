@@ -1,15 +1,17 @@
 const misc = require("../helpers/response")
-const Payment = require("../models/Payment")
 
 const moment = require("moment")
 
 const axios = require("axios")
 
 const { v4: uuidv4 } = require('uuid')
+
+const utils = require("../helpers/utils")
+
+const Payment = require("../models/Payment")
 const Transaction = require("../models/Transaction")
 const Invoice = require("../models/Invoice")
 const Ppob = require("../models/Ppob")
-const utils = require("../helpers/utils")
 const Fcm = require("../models/Fcm")
 const Inbox = require("../models/Inbox")
 const App = require("../models/App")
@@ -77,7 +79,7 @@ module.exports = {
             if (invoiceData.length != 0)
                 counterNumber = parseInt(invoiceData[0].no) + 1
 
-            var invoiceValue = `PPOB_${type}-` + invoiceDate + '-' + (Math.floor(Math.random() * (99999 - 10000 + 1)) + 10000)
+            var invoiceValue = `PPOB-${type}-` + invoiceDate + '-' + (Math.floor(Math.random() * (99999 - 10000 + 1)) + 10000)
 
             var apps = await App.getAppById(app)
 

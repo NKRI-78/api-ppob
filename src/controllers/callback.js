@@ -2,6 +2,7 @@ const axios = require('axios')
 
 const misc = require("../helpers/response")
 const Invoice = require('../models/Invoice')
+const Inbox = require('../models/Inbox')
 
 module.exports = {
 
@@ -15,6 +16,7 @@ module.exports = {
             if(invoices.length == 0)
                 throw new Error("Inovice not found")
 
+            var transactionId = invoices[0].transaction_id
             var product = invoices[0].product
             var idpel = invoices[0].idpel
 
@@ -48,6 +50,8 @@ module.exports = {
                     if(response.data.rc !== "00") {
                         misc.response(res, 400, true, response.data.status)
                     } else {
+                        await Inbox.updateInboxByTransactionId(transactionId)
+
                         misc.response(res, 200, false, response.data.status)
                     }
                 } else {
