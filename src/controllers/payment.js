@@ -126,10 +126,8 @@ module.exports = {
             if(payment_code == "gopay" || payment_code == "shopee" || payment_code == "ovo" || payment_code == "dana") {
                 paymentAccess = result.data.data.data.actions[0].url
                 paymentType = "emoney"
-                const now = moment(new Date()).tz("Asia/Jakarta")
-                const newTime = now.add(30, 'minutes')
 
-                paymentExpire = newTime.format('YYYY-MM-DD HH:mm:ss')
+                paymentExpire =  moment().tz("Asia/Jakarta").add(30, 'minutes').format('YYYY-MM-DD HH:mm:ss')
             } else {
                 paymentAccess = result.data.data.data.vaNumber
                 paymentType = "va"
@@ -138,10 +136,11 @@ module.exports = {
 
             await Inbox.storeInbox(titleInbox, utils.formatCurrency(descInbox), transactionId, "UNPAID", "marlinda", paymentAccess, paymentExpire, payment_code, paymentType, user_id)
             
-            misc.response(res, 200, false, "")
+            misc.response(res, 200, false, "", {
+                payment_access: paymentAccess,
+                payment_type: paymentType,
+            })
         } catch (e) {
-            console.log(e)
-
             await Transaction.delete(transactionId)
 
             await Invoice.delete(transactionId)
