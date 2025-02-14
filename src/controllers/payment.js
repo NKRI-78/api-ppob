@@ -139,7 +139,7 @@ module.exports = {
                 utils.formatCurrency(descInbox), 
                 transactionId, "UNPAID", "marlinda", 
                 paymentAccess, paymentExpire, 
-                payment_code, paymentType, user_id
+                payment_code, paymentType, invoiceValue, user_id
             )
             
             misc.response(res, 200, false, "", {
