@@ -59,7 +59,6 @@ module.exports = {
                         throw new Error(response.data.error);
 
                     if(response.data.rc !== "00") {
-                        // misc.response(res, 400, true, response.data.status)
                         throw new Error(response.data.status)
                     } else {
                         var fcms = await Fcm.getFcm(userId, "marlinda")

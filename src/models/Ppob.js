@@ -24,7 +24,9 @@ module.exports = {
                 whereClause = `WHERE prefix IN ('AXIS/XL', 'XLREG')`;
             }
     
-            const query = `SELECT uid, product_code, product_price, product_name FROM pricelists ${whereClause} AND type LIKE '%${type}%'`;
+            const query = `SELECT uid, product_code, product_price, product_name
+            FROM pricelists
+            ${whereClause} AND type LIKE '%${type}%' AND product_price > 10000 `;
 
             conn.query(query, (e, result) => {
                 if (e) {
