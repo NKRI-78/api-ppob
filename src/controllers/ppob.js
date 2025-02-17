@@ -6,10 +6,21 @@ const Ppob = require("../models/Ppob");
 module.exports = {
 
     priceListPulsaData: async (req, res) => {
-        const { prefix } = req.query
+        const { prefix, type } = req.query
 
         try {
-            var priceList = await Ppob.priceListPulsaData(prefix)
+            if(typeof prefix == "undefined" || prefix == "")
+                throw new Error("Param query prefix is required")
+
+            if(typeof type == "undefined" || type == "")
+                throw new Error("Param type is required")
+
+            var types = ["PULSA", "DATA"]
+
+            if (!types.includes(type.toUpperCase())) 
+                throw new Error("Invalid type. Allowed values are: PULSA, DATA")
+
+            var priceList = await Ppob.priceListPulsaData(prefix, type)
 
             var data = []
 

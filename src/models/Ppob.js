@@ -2,7 +2,7 @@ const conn = require('../configs/db')
 
 module.exports = {
 
-    priceListPulsaData: (prefix) => {
+    priceListPulsaData: (prefix, type) => {
         return new Promise((resolve, reject) => {
             const prefixMap = {
                 "THREE": ["62895", "62896", "62897", "62898", "62899"],
@@ -24,7 +24,9 @@ module.exports = {
                 whereClause = `WHERE prefix IN ('AXIS/XL', 'XLREG')`;
             }
     
-            const query = `SELECT uid, product_code, product_price, product_name FROM pricelists ${whereClause}`;
+            const query = `SELECT uid, product_code, product_price, product_name FROM pricelists ${whereClause} AND type LIKE '%${type}%'`;
+
+            console.log(query)
     
             conn.query(query, (e, result) => {
                 if (e) {
