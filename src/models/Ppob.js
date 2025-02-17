@@ -26,8 +26,6 @@ module.exports = {
     
             const query = `SELECT uid, product_code, product_price, product_name FROM pricelists ${whereClause} AND type LIKE '%${type}%'`;
 
-            console.log(query)
-    
             conn.query(query, (e, result) => {
                 if (e) {
                     reject(new Error(e));
