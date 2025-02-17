@@ -38,6 +38,8 @@ module.exports = {
                 "ref1":""
             }
 
+            console.log(data)
+
             var url = process.env.RAJABILLER_PROD
         
             var config = {
@@ -57,7 +59,8 @@ module.exports = {
                         throw new Error(response.data.error);
 
                     if(response.data.rc !== "00") {
-                        misc.response(res, 400, true, response.data.status)
+                        // misc.response(res, 400, true, response.data.status)
+                        throw new Error(response.data.status)
                     } else {
                         var fcms = await Fcm.getFcm(userId, "marlinda")
 
@@ -80,8 +83,6 @@ module.exports = {
                     }
                 } 
             }
-
-            misc.response(res, 200, false, "")
 
         } catch(e) {
             console.log(e)
