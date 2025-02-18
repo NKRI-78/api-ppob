@@ -12,7 +12,7 @@ module.exports = {
                     if (e) {
                         reject(new Error(e))
                     } else {
-                        resolve(result)
+                        resolve(result[0])
                     }
                 })
             }

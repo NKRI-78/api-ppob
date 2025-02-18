@@ -34,7 +34,11 @@ module.exports = {
                 for (const i in invoices) {
                     var invoice = invoices[i]
 
-                    var transactions = await Transaction.findByTransactionId(invoice.transaction_id)
+                    var transaction = await Transaction.findByTransactionId(invoice.transaction_id)
+
+                    const profile = await Profile.getProfile(transaction.user_id, transaction.name)
+                    
+                    console.log(profile)
                 }
 
                 // const transactions = await Promise.all(invoices.map((invoice) => { 
