@@ -10,14 +10,14 @@ const utils = require('../helpers/utils')
 module.exports = {
 
     payPulsa: async (req, res) => {
-        const { orderId, status } = req.body 
+        const { order_id, status } = req.body 
 
         try {
 
-            var invoices = await Invoice.findByValue(orderId)
+            var invoices = await Invoice.findByValue(order_id)
 
             if(invoices.length == 0)
-                throw new Error("Inovice not found")
+                throw new Error("Invoice not found")
 
             var transactionId = invoices[0].transaction_id
             var product = invoices[0].product
