@@ -8,71 +8,63 @@ module.exports = {
 
     infoPayment: async (_, res) => {
         try {
-            var data = []
+            const payments = await Admin.getPayment();
     
-            const payments = await Admin.getPayment()
-
-            // {
-            //     "user": [
-            //         {
-            //             "fullname": "RAHMAD FANI",
-            //             "address": "Daerah Khusus Ibukota Jakarta Kota Jakarta Selatan\nJl. Kemang Selatan IX No.47 C, Indonesia"
-            //         }
-            //     ],
-            //     "order_id": "PPOB-PULSA-20250218-88998",
-            //     "gross_amount": 52000,
-            //     "total_amount": 53500,
-            //     "transaction_status": "expire",
-            //     "created_at": "2025-02-18T07:55:38.000Z"
-            // }
+            const data = await Promise.all(payments.map(async (payment) => {
+                const transactionId = payment.orderId;
+                const invoices = await Invoice.findByValue(transactionId);
     
-            data = await Promise.all(payments.map(async (payment) => {
-                const transactionId = payment.orderId
-    
-                const invoices = await Invoice.findByValue(transactionId)
-
-                for (const i in invoices) {
-                    var invoice = invoices[i]
-
-                    var transaction = await Transaction.findByTransactionId(invoice.transaction_id)
-
-                    const profile = await Profile.getProfile(transaction.user_id, transaction.name)
-                    
-                    console.log(profile)
+                if (!invoices || invoices.length === 0) {
+                    return {
+                        user: { fullname: "-" },
+                        idpel: "-",
+                        provider: "-",
+                        order_id: payment.orderId,
+                        gross_amount: parseInt(payment.grossAmount) || 0,
+                        total_amount: parseInt(payment.totalAmount) || 0,
+                        transaction_status: payment.transactionStatus ?? "-",
+                        created_at: payment.createdAt ?? "-"
+                    };
                 }
-
-                // const transactions = await Promise.all(invoices.map((invoice) => { 
-                //     Transaction.findByTransactionId(invoice.transaction_id)
-                // }));
-
-                // const flattenedTransactions = transactions.flat()
     
-                // const userData = await Promise.all(flattenedTransactions.map(async (transaction) => {
-                //     const profiles = await Profile.getProfile(transaction.user_id, transaction.name)
-                //     return profiles.map(profile => ({
-                //         fullname: profile.fullname,
-                //         address: profile.address,
-                //     }))
-                // }))
-
-                // const flattenedUserData = userData.flat()
+                const invoice = invoices[0]; // Take the first invoice
+                const transaction = await Transaction.findByTransactionId(invoice.transaction_id);
+    
+                if (!transaction) {
+                    return {
+                        user: { fullname: "-" },
+                        idpel: invoice.idpel ?? "-",
+                        provider: invoice.product_name ?? "-",
+                        order_id: payment.orderId,
+                        gross_amount: parseInt(payment.grossAmount) || 0,
+                        total_amount: parseInt(payment.totalAmount) || 0,
+                        transaction_status: payment.transactionStatus ?? "-",
+                        created_at: payment.createdAt ?? "-"
+                    };
+                }
+    
+                const profile = await Profile.getProfile(transaction.user_id, transaction.name);
     
                 return {
-                    user: [],
+                    user: { fullname: profile?.fullname ?? "-" }, // Safe access
+                    idpel: invoice.idpel ?? "-",
+                    provider: invoice.product_name ?? "-",
                     order_id: payment.orderId,
-                    gross_amount: parseInt(payment.grossAmount),
-                    total_amount: parseInt(payment.totalAmount),
-                    transaction_status: payment.transactionStatus,
-                    created_at: payment.createdAt
-                }
-            }))
+                    gross_amount: parseInt(payment.grossAmount) || 0,
+                    total_amount: parseInt(payment.totalAmount) || 0,
+                    transaction_status: payment.transactionStatus ?? "-",
+                    created_at: payment.createdAt ?? "-"
+                };
+            }));
     
-            misc.response(res, 200, false, "", data)
+            misc.response(res, 200, false, "", data);
         } catch (e) {
             console.error(e);
-            misc.response(res, 400, true, e.message)
+            misc.response(res, 400, true, e.message);
         }
     },
+    
+    
     
 
 }
