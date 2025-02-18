@@ -18,7 +18,10 @@ module.exports = {
 
     findByValue: (value) => {
         return new Promise ((resolve, reject) => {
-            var query = `SELECT * FROM invoices WHERE value = ? ORDER BY no DESC LIMIT 1`
+            var query = `SELECT i.*, pr.product_name 
+            FROM invoices i
+            LEFT JOIN pricelists pr ON pr.product_code = i.product
+            WHERE value = ? ORDER BY no DESC LIMIT 1`
             const values = [value]
             conn.query(query, values, (e, result) => {
                 if(e) {

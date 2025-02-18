@@ -6,54 +6,67 @@ const Transaction = require("../models/Transaction");
 
 module.exports = {
 
-    infoPayment: async (req, res) => {
+    infoPayment: async (_, res) => {
         try {
-            let data = [];
+            var data = []
     
-            // Fetch all payments
-            const payments = await Admin.getPayment();
+            const payments = await Admin.getPayment()
+
+            // {
+            //     "user": [
+            //         {
+            //             "fullname": "RAHMAD FANI",
+            //             "address": "Daerah Khusus Ibukota Jakarta Kota Jakarta Selatan\nJl. Kemang Selatan IX No.47 C, Indonesia"
+            //         }
+            //     ],
+            //     "order_id": "PPOB-PULSA-20250218-88998",
+            //     "gross_amount": 52000,
+            //     "total_amount": 53500,
+            //     "transaction_status": "expire",
+            //     "created_at": "2025-02-18T07:55:38.000Z"
+            // }
     
-            // Process payments in parallel
             data = await Promise.all(payments.map(async (payment) => {
-                const transactionId = payment.orderId;
+                const transactionId = payment.orderId
     
-                // Fetch all invoices for the payment
-                const invoices = await Invoice.findByValue(transactionId);
+                const invoices = await Invoice.findByValue(transactionId)
+
+                for (const i in invoices) {
+                    var invoice = invoices[i]
+
+                    var transactions = await Transaction.findByTransactionId(invoice.transaction_id)
+                }
+
+                // const transactions = await Promise.all(invoices.map((invoice) => { 
+                //     Transaction.findByTransactionId(invoice.transaction_id)
+                // }));
+
+                // const flattenedTransactions = transactions.flat()
     
-                // Fetch transactions in parallel
-                const transactions = await Promise.all(invoices.map(invoice => 
-                    Transaction.findByTransactionId(invoice.transaction_id)
-                ));
-    
-                // Flatten the transactions array
-                const flattenedTransactions = transactions.flat();
-    
-                // Fetch user profiles in parallel
-                const userData = await Promise.all(flattenedTransactions.map(async (transaction) => {
-                    const profiles = await Profile.getProfile(transaction.user_id, transaction.name);
-                    return profiles.map(profile => ({
-                        fullname: profile.fullname,
-                        address: profile.address
-                    }));
-                }));
-    
-                // Flatten userData array
-                const flattenedUserData = userData.flat();
+                // const userData = await Promise.all(flattenedTransactions.map(async (transaction) => {
+                //     const profiles = await Profile.getProfile(transaction.user_id, transaction.name)
+                //     return profiles.map(profile => ({
+                //         fullname: profile.fullname,
+                //         address: profile.address,
+                //     }))
+                // }))
+
+                // const flattenedUserData = userData.flat()
     
                 return {
-                    user: flattenedUserData,
+                    user: [],
                     order_id: payment.orderId,
                     gross_amount: parseInt(payment.grossAmount),
                     total_amount: parseInt(payment.totalAmount),
                     transaction_status: payment.transactionStatus,
                     created_at: payment.createdAt
-                };
-            }));
+                }
+            }))
     
-            misc.response(res, 200, false, "", data);
+            misc.response(res, 200, false, "", data)
         } catch (e) {
             console.error(e);
-            misc.response(res, 400, true, e.message);
+            misc.response(res, 400, true, e.message)
         }
     },
     
