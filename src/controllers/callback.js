@@ -23,11 +23,9 @@ module.exports = {
             var product = invoices[0].product
             var idpel = invoices[0].idpel
 
-            var transactions = await Transaction.findByTransactionId(transactionId)
+            var transaction = await Transaction.findByTransactionId(transactionId)
 
-            var userId = transactions.length == 0 
-            ? "-" 
-            : transactions[0].user_id
+            var userId = transaction.user_id
 
             var data = {
                 "method":"bayar",
