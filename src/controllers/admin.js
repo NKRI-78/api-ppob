@@ -27,7 +27,7 @@ module.exports = {
                     };
                 }
     
-                const invoice = invoices[0]; // Take the first invoice
+                const invoice = invoices[0];
                 const transaction = await Transaction.findByTransactionId(invoice.transaction_id);
     
                 if (!transaction) {
@@ -46,7 +46,7 @@ module.exports = {
                 const profile = await Profile.getProfile(transaction.user_id, transaction.name);
     
                 return {
-                    user: { fullname: profile?.fullname ?? "-" }, // Safe access
+                    user: { fullname: profile?.fullname ?? "-" },
                     idpel: invoice.idpel ?? "-",
                     provider: invoice.product_name ?? "-",
                     order_id: payment.orderId,
@@ -63,8 +63,6 @@ module.exports = {
             misc.response(res, 400, true, e.message);
         }
     },
-    
-    
     
 
 }
