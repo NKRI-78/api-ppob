@@ -4,7 +4,8 @@ const ppob = require("../controllers/ppob")
 
 const jwt = require('../helpers/jwt')
 
-Route
+Route   
+    .get("/info/price-list-pulsa-data-general", ppob.priceListPulsaDataGeneral)
     .get("/info/price-list-pulsa-data", ppob.priceListPulsaData)
     .get("/info/price-list-pln-prabayar", ppob.priceListPlnPrabayar)
     .post("/pay/pulsa", jwt, ppob.payPulsa)
