@@ -86,6 +86,9 @@ module.exports = {
             var appId = apps.length == 0 
             ? -1 
             : apps[0].id
+            var appName = apps.length == 0 
+            ? -1 
+            : apps[0].name
 
             await Transaction.insert(appId, transactionId, user_id)
 
@@ -107,7 +110,7 @@ module.exports = {
                 channel_id: payment_channel,
                 orderId: invoiceValue,
                 amount: parseInt(amount), 
-                app: "marlinda",
+                app: appName,
                 callbackUrl: callbackUrl
             }
 
