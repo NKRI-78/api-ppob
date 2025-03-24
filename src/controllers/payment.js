@@ -114,8 +114,6 @@ module.exports = {
                 callbackUrl: callbackUrl
             }
 
-            console.log(data)
-
             var config = {
                 method: 'POST',
                 url: process.env.PAY_MIDTRANS,
@@ -150,7 +148,8 @@ module.exports = {
             misc.response(res, 200, false, "", {
                 payment_access: paymentAccess,
                 payment_type: paymentType,
-                order_id: invoiceValue
+                order_id: invoiceValue,
+                payment_expire: paymentExpire
             })
         } catch (e) {
             await Transaction.delete(transactionId)
