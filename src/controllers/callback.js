@@ -10,24 +10,22 @@ const utils = require('../helpers/utils')
 module.exports = {
 
     payPulsa: async (req, res) => {
-        const { orderId, status } = req.body 
+        const { order_id, status } = req.body 
 
         try {
 
-            var invoices = await Invoice.findByValue(orderId)
+            var invoices = await Invoice.findByValue(order_id)
 
             if(invoices.length == 0)
-                throw new Error("Inovice not found")
+                throw new Error("Invoice not found")
 
             var transactionId = invoices[0].transaction_id
             var product = invoices[0].product
             var idpel = invoices[0].idpel
 
-            var transactions = await Transaction.findByTransactionId(transactionId)
+            var transaction = await Transaction.findByTransactionId(transactionId)
 
-            var userId = transactions.length == 0 
-            ? "-" 
-            : transactions[0].user_id
+            var userId = transaction.user_id
 
             var data = {
                 "method":"bayar",
@@ -37,6 +35,8 @@ module.exports = {
                 "idpel": idpel,
                 "ref1":""
             }
+
+            console.log(data)
 
             var url = process.env.RAJABILLER_PROD
         
@@ -57,7 +57,7 @@ module.exports = {
                         throw new Error(response.data.error);
 
                     if(response.data.rc !== "00") {
-                        misc.response(res, 400, true, response.data.status)
+                        throw new Error(response.data.status)
                     } else {
                         var fcms = await Fcm.getFcm(userId, "marlinda")
 
@@ -80,8 +80,6 @@ module.exports = {
                     }
                 } 
             }
-
-            misc.response(res, 200, false, "")
 
         } catch(e) {
             console.log(e)

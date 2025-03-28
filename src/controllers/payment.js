@@ -86,28 +86,31 @@ module.exports = {
             var appId = apps.length == 0 
             ? -1 
             : apps[0].id
+            var appName = apps.length == 0 
+            ? -1 
+            : apps[0].name
 
             await Transaction.insert(appId, transactionId, user_id)
 
             await Invoice.insert(invoiceDate, counterNumber, invoiceValue, transactionId, idpel, product_id)
 
-            var fcms = await Fcm.getFcm(user_id, app)
+            // var fcms = await Fcm.getFcm(user_id, app)
 
             var titleInbox = `Terima kasih ! telah melakukan transaksi ${productName}`
             var descInbox = amount
 
-            for (const i in fcms) {
-                var fcm = fcms[i]
-                var token = fcm.token
+            // for (const i in fcms) {
+            //     var fcm = fcms[i]
+            //     var token = fcm.token
                 
-                await utils.sendFCM(titleInbox, `Silahkan periksa halaman notifikasi untuk info pembayaran`, token, "ppob")
-            }
+            //     await utils.sendFCM(titleInbox, `Silahkan periksa halaman notifikasi untuk info pembayaran`, token, "ppob")
+            // }
 
             var data = {
                 channel_id: payment_channel,
                 orderId: invoiceValue,
                 amount: parseInt(amount), 
-                app: "marlinda",
+                app: appName,
                 callbackUrl: callbackUrl
             }
 
@@ -134,11 +137,19 @@ module.exports = {
                 paymentExpire = result.data.data.expire 
             }
 
-            await Inbox.storeInbox(titleInbox, utils.formatCurrency(descInbox), transactionId, "UNPAID", "marlinda", paymentAccess, paymentExpire, payment_code, paymentType, user_id)
+            await Inbox.storeInbox(
+                titleInbox, 
+                utils.formatCurrency(descInbox), 
+                transactionId, "UNPAID", "marlinda", 
+                paymentAccess, paymentExpire, 
+                payment_code, paymentType, invoiceValue, user_id
+            )
             
             misc.response(res, 200, false, "", {
                 payment_access: paymentAccess,
                 payment_type: paymentType,
+                order_id: invoiceValue,
+                payment_expire: paymentExpire
             })
         } catch (e) {
             await Transaction.delete(transactionId)
