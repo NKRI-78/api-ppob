@@ -114,6 +114,8 @@ module.exports = {
                 callbackUrl: callbackUrl
             }
 
+            console.log(data)
+
             var config = {
                 method: 'POST',
                 url: process.env.PAY_MIDTRANS,
