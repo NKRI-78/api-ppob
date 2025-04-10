@@ -94,17 +94,17 @@ module.exports = {
 
             await Invoice.insert(invoiceDate, counterNumber, invoiceValue, transactionId, idpel, product_id)
 
-            // var fcms = await Fcm.getFcm(user_id, app)
+            var fcms = await Fcm.getFcm(user_id, app)
 
             var titleInbox = `Terima kasih ! telah melakukan transaksi ${productName}`
             var descInbox = amount
 
-            // for (const i in fcms) {
-            //     var fcm = fcms[i]
-            //     var token = fcm.token
+            for (const i in fcms) {
+                var fcm = fcms[i]
+                var token = fcm.token
                 
-            //     await utils.sendFCM(titleInbox, `Silahkan periksa halaman notifikasi untuk info pembayaran`, token, "ppob")
-            // }
+                await utils.sendFCM(titleInbox, `Silahkan periksa halaman notifikasi untuk info pembayaran`, token, "ppob")
+            }
 
             var data = {
                 channel_id: payment_channel,

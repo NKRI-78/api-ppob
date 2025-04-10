@@ -28,5 +28,14 @@ module.exports = {
             database: "rakhsa"
         }
     },
+    database_lingkunganku: {
+        mysql: {
+            host: process.env.DB_HOST,
+            user: process.env.DB_USER,
+            password: process.env.DB_PASSWORD,
+            port: process.env.DB_PORT,
+            database: "lingkunganku_dev"
+        }
+    },
     port: process.env.PORT
 }
