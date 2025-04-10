@@ -132,7 +132,7 @@ module.exports = {
                 paymentAccess = result.data.data.data.actions[0].url
                 paymentType = "emoney"
 
-                paymentExpire =  moment().tz("Asia/Jakarta").add(30, 'minutes').format('YYYY-MM-DD HH:mm:ss')
+                paymentExpire =  moment().tz("Asia/Jakarta").add(15, 'minutes').format('YYYY-MM-DD HH:mm:ss')
             } else {
                 paymentAccess = result.data.data.data.vaNumber
                 paymentType = "va"
