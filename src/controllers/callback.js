@@ -36,8 +36,6 @@ module.exports = {
                 "ref1":""
             }
 
-            console.log(data)
-
             var url = process.env.RAJABILLER_PROD
         
             var config = {

@@ -27,6 +27,8 @@ module.exports = {
                     field4: inbox.field4 ?? "-",
                     field5: inbox.field5 ?? "-",
                     field6: inbox.field6 ?? "-",
+                    field7: inbox.field7 ?? "-",
+                    created_at: inbox.created_at,
                     link: inbox.link ?? "-",
                     is_read: inbox.is_read == 0 
                     ? false 
@@ -35,6 +37,24 @@ module.exports = {
             }
 
             misc.response(res, 200, false, "", data)
+
+        } catch(e) {
+            console.log(e)
+            misc.response(res, 400, true, e.message)
+        }
+    },
+
+    updateInboxAllRead: async (req, res) => {
+        const { user_id } = req.body 
+
+        try {
+
+            if(typeof user_id == "undefined" || user_id == "")
+                throw new Error("Field user_id is required")
+
+             await Inbox.updateInboxAllRead(user_id)
+
+            misc.response(res, 200, false, "")
 
         } catch(e) {
             console.log(e)
@@ -68,6 +88,8 @@ module.exports = {
                     field4: inbox.field4 ?? "-",
                     field5: inbox.field5 ?? "-",
                     field6: inbox.field6 ?? "-",
+                    field7: inbox.field7 ?? "-",
+                    created_at: inbox.created_at,
                     link: inbox.link ?? "-",
                     is_read: inbox.is_read == 0 
                     ? false 

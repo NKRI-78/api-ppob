@@ -114,8 +114,6 @@ module.exports = {
                 callbackUrl: callbackUrl
             }
 
-            console.log(data)
-
             var config = {
                 method: 'POST',
                 url: process.env.PAY_MIDTRANS,
@@ -142,9 +140,9 @@ module.exports = {
             await Inbox.storeInbox(
                 titleInbox, 
                 utils.formatCurrency(descInbox), 
-                transactionId, "UNPAID", "marlinda", 
+                transactionId, "UNPAID", app, 
                 paymentAccess, paymentExpire, 
-                payment_code, paymentType, invoiceValue, user_id
+                payment_code, paymentType, invoiceValue, idpel, user_id
             )
             
             misc.response(res, 200, false, "", {

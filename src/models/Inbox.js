@@ -44,6 +44,20 @@ module.exports = {
         })
     },
 
+    updateInboxAllRead: (userId) => {
+        return new Promise((resolve, reject) => {
+            var query = `UPDATE inboxes SET is_read = 1 WHERE user_id = ?`
+            const values = [userId]
+            conn.query(query, values, (e, result) => {
+                if (e) {
+                    reject(new Error(e))
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    },
+
     updateInboxByTransactionId: (transactionId) => {
         return new Promise((resolve, reject) => {
             var query = `UPDATE inboxes SET field2 = ? WHERE field1 = ?`
@@ -58,11 +72,11 @@ module.exports = {
         })
     },
 
-    storeInbox: (title, description, field1, field2, origin, link, field5, field4, field3, field6, userId) => {
+    storeInbox: (title, description, field1, field2, origin, link, field5, field4, field3, field6, field7, userId) => {
         return new Promise((resolve, reject) => {
-            var query = `INSERT inboxes (title, description, field1, field2, origin, link, field4, field5, field3, field6, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+            var query = `INSERT inboxes (title, description, field1, field2, origin, link, field4, field5, field3, field6, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
-            var values = [title, description, field1, field2, origin, link, field4, field5, field3, field6, userId]
+            var values = [title, description, field1, field2, origin, link, field4, field5, field3, field6, field7, userId]
 
             conn.query(query, values, (e, result) => {
                 if (e) {
