@@ -55,6 +55,7 @@ module.exports = {
                         throw new Error(response.data.error);
 
                     if(response.data.rc !== "00") {
+                        await Inbox.updateInboxByTransactionId(transactionId)
                         throw new Error(response.data.status)
                     } else {
                         var fcms = await Fcm.getFcm(userId, "marlinda")
