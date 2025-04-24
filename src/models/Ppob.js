@@ -62,7 +62,7 @@ module.exports = {
     
             const query = `SELECT uid, product_code, product_price, product_name
             FROM pricelists
-            ${whereClause} AND type LIKE '%${type}%' AND product_price >= 50000`;
+            ${whereClause} AND type LIKE '%${type}%'`; // AND product_price >= 50000
 
             conn.query(query, (e, result) => {
                 if (e) {
