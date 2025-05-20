@@ -30,6 +30,18 @@ module.exports = {
                 })
             }
 
+            // if(app == "pgb") {
+            //     query = `SELECT fcm AS token FROM users WHERE id = '${userId}'`
+
+            //     connAtj.query(query, (e, result) => {
+            //         if (e) {
+            //             reject(new Error(e))
+            //         } else {
+            //             resolve(result)
+            //         }
+            //     })
+            // } 
+
             if(app == "lingkunganku") {
 
                 query = `SELECT fcm_token AS token FROM Users WHERE id = '${userId}'`

@@ -82,7 +82,7 @@ module.exports = {
             var invoiceValue = `PPOB-${type}-` + invoiceDate + '-' + (Math.floor(Math.random() * (99999 - 10000 + 1)) + 10000)
 
             var apps = await App.getAppById(app)
-
+            
             var appId = apps.length == 0 
             ? -1 
             : apps[0].id
@@ -94,16 +94,19 @@ module.exports = {
 
             await Invoice.insert(invoiceDate, counterNumber, invoiceValue, transactionId, idpel, product_id)
 
-            var fcms = await Fcm.getFcm(user_id, app)
 
             var titleInbox = `Terima kasih ! telah melakukan transaksi ${productName}`
             var descInbox = amount
 
-            for (const i in fcms) {
-                var fcm = fcms[i]
-                var token = fcm.token
-                
-                await utils.sendFCM(titleInbox, `Silahkan periksa halaman notifikasi untuk info pembayaran`, token, "ppob")
+            if(app == "pgb") {
+                var fcms = await Fcm.getFcm(user_id, app)
+
+                for (const i in fcms) {
+                    var fcm = fcms[i]
+                    var token = fcm.token
+                    
+                    await utils.sendFCM(titleInbox, `Silahkan periksa halaman notifikasi untuk info pembayaran`, token, "ppob")
+                }
             }
 
             var data = {
@@ -152,6 +155,7 @@ module.exports = {
                 payment_expire: paymentExpire
             })
         } catch (e) {
+            console.log(e)
             await Transaction.delete(transactionId)
 
             await Invoice.delete(transactionId)
