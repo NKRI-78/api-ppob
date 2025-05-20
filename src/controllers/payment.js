@@ -94,11 +94,10 @@ module.exports = {
 
             await Invoice.insert(invoiceDate, counterNumber, invoiceValue, transactionId, idpel, product_id)
 
-
             var titleInbox = `Terima kasih ! telah melakukan transaksi ${productName}`
             var descInbox = amount
 
-            if(app == "pgb") {
+            if(app != "pgb") {
                 var fcms = await Fcm.getFcm(user_id, app)
 
                 for (const i in fcms) {
