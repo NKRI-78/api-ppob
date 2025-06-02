@@ -28,26 +28,26 @@ module.exports = {
                 }
     
                 const invoice = invoices[0];
-                
-                // const transaction = await Transaction.findByTransactionId(invoice.transaction_id);
+
+                const transaction = await Transaction.findByTransactionId(invoice.transaction_id, "marlinda");
+
+                if (!transaction) {
+                    return {
+                        user: { fullname: "-" },
+                        idpel: invoice.idpel ?? "-",
+                        provider: invoice.product_name ?? "-",
+                        order_id: payment.orderId,
+                        gross_amount: parseInt(payment.grossAmount) || 0,
+                        total_amount: parseInt(payment.totalAmount) || 0,
+                        transaction_status: payment.transactionStatus ?? "-",
+                        created_at: payment.createdAt ?? "-"
+                    };
+                }
     
-                // if (!transaction) {
-                //     return {
-                //         user: { fullname: "-" },
-                //         idpel: invoice.idpel ?? "-",
-                //         provider: invoice.product_name ?? "-",
-                //         order_id: payment.orderId,
-                //         gross_amount: parseInt(payment.grossAmount) || 0,
-                //         total_amount: parseInt(payment.totalAmount) || 0,
-                //         transaction_status: payment.transactionStatus ?? "-",
-                //         created_at: payment.createdAt ?? "-"
-                //     };
-                // }
-    
-                // const profile = await Profile.getProfile(transaction.user_id, transaction.name);
-    
+                const profile = await Profile.getProfile(transaction.user_id, "marlinda");
+
                 return {
-                    user: { fullname: "-" },
+                    user: { fullname: profile.fullname },
                     idpel: invoice.idpel ?? "-",
                     provider: invoice.product_name ?? "-",
                     order_id: payment.orderId,

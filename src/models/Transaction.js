@@ -16,12 +16,12 @@ module.exports = {
         })
     },
 
-    findByTransactionId: (transactionId) => {
+    findByTransactionId: (transactionId, appName) => {
         return new Promise ((resolve, reject) => {
-            var query = `SELECT tr.user_id, a.name FROM transactions tr
+            var query = `SELECT tr.user_id FROM transactions tr
             INNER JOIN apps a ON a.id =  tr.app_id
-            WHERE tr.uid = ?`
-            const values = [transactionId]
+            WHERE tr.uid = ? AND a.name = ?`
+            const values = [transactionId, appName]
             conn.query(query, values, (e, result) => {
                 if(e) {
                     reject(new Error(e))
