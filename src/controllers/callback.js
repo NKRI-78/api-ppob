@@ -54,8 +54,17 @@ module.exports = {
                     if(typeof response.data != "undefined" && response.data.error)
                         throw new Error(response.data.error);
 
+                    await Inbox.updateInboxByTransactionId(transactionId)
+
                     if(response.data.rc !== "00") {
-                        await Inbox.updateInboxByTransactionId(transactionId)
+                        var fcms = await Fcm.getFcm(userId, "marlinda")
+
+                        for (const i in fcms) {
+                            var fcm = fcms[i]
+                            var token = fcm.token
+
+                            await utils.sendFCM("Pembayaran belum berhasil", response.data.status, token, "ppob")
+                        }
                         throw new Error(response.data.status)
                     } else {
                         var fcms = await Fcm.getFcm(userId, "marlinda")
@@ -64,15 +73,22 @@ module.exports = {
                             var fcm = fcms[i]
                             var token = fcm.token
 
-                            await utils.sendFCM("Pembayaran berhasil !", "Terima kasih sudah menggunakan layanan kami", token, "ppob")
+                            await utils.sendFCM("Pembayaran berhasil", "Terima kasih sudah menggunakan layanan kami", token, "ppob")
                         }
-
-                        await Inbox.updateInboxByTransactionId(transactionId)
-
                         misc.response(res, 200, false, response.data.status)
                     }
+
+
                 } else {
                     if(typeof response.data != "undefined") {
+                        var fcms = await Fcm.getFcm(userId, "marlinda")
+                        
+                        for (const i in fcms) {
+                            var fcm = fcms[i]
+                            var token = fcm.token
+
+                            await utils.sendFCM("Pembayaran belum berhasil", response.data.error, token, "ppob")
+                        }
                         throw new Error(response.data.error)
                     } else {
                         throw new Error('Oops! Please try again later')
