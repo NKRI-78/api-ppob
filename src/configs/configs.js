@@ -16,7 +16,7 @@ module.exports = {
             user: process.env.DB_USER,
             password: process.env.DB_PASSWORD,
             port: process.env.DB_PORT,
-            database: "payment_gateway"
+            database: "payment_gateway_langitdigital_dev"
         }
     },
     database_marlinda: {
